@@ -36,4 +36,29 @@ describe('Registration tests', () => {
     cy.get('[data-test-id="submit"]').click();
     cy.url().should('eq', 'http://localhost:8080/thank-you?') 
   })
+
+  it('enter invalid password', () => {
+    cy.get('[data-test-id="password"]').type("123"); // Невалидна парола (например твърде къса)
+    cy.get('[data-test-id="submit"]').click();
+    cy.get('[data-test-id="password-error"]').should('be.visible');
+  });
+  
+  it('enter valid password', () => {
+    cy.get('[data-test-id="password"]').type("StrongPass123"); // Валидна парола
+    cy.get('[data-test-id="submit"]').click();
+    cy.get('[data-test-id="password-error"]').should('not.exist'); // Проверяваме, че няма съобщение за грешка
+  });
+  
+  it('enter invalid phone number', () => {
+    cy.get('[data-test-id="phone"]').type("123abc"); // Невалиден телефонен номер
+    cy.get('[data-test-id="submit"]').click();
+    cy.get('[data-test-id="phone-error"]').should('be.visible');
+  });
+  
+  it('enter invalid date of birth', () => {
+    cy.get('[data-test-id="date"]').type("invalid-date"); // Невалидна дата
+    cy.get('[data-test-id="submit"]').click();
+    cy.get('[data-test-id="date-error"]').should('be.visible');
+  });
+  
 })
